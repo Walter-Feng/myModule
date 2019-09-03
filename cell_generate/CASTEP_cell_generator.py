@@ -256,6 +256,8 @@ if __name__ == '__main__':
                                 filestring += 'symmetry_generate' + '\n'
                             if fix_all_cell:
                                 filestring += 'fix_all_cell ' + 'true' + '\n'
+                            if fix_vol:
+                                filestring += 'fix_vol ' + 'true' + '\n'
                             filestring += '!'
 
                             inputfile.write(filestring)                                
@@ -324,7 +326,7 @@ if __name__ == '__main__':
                                 if not os.path.exists((FILE_HEADER+str(loop) + '_dir/').replace('-','_')):
                                     os.makedirs((FILE_HEADER+str(loop) + '_dir/').replace('-','_'))
                                 with open((FILE_HEADER+str(loop) + '_dir/' + FILE_HEADER+str(loop)+'.cell').replace('-','_'),'w') as inputfile:
-                                    filestring = "! " + FILE_HEADER + " A_STEP:" + str(A_STEP)+' B_STEP:'+str(B_STEP)+' C_STEP:'+str(C_STEP) + '\n'
+                                    filestring = "! " + FILE_HEADER + " VOL_STEP:" + str(loop) + '\n'
                                     filestring +='!\n'
                                     filestring += '%block lattice_abc\n'
                                     filestring += str(math.pow(loop,1/3) * a) + ' ' + str(math.pow(loop,1/3) * b) + ' ' + str(math.pow(loop,1/3) * c)+'\n'
@@ -341,6 +343,8 @@ if __name__ == '__main__':
                                         filestring += 'symmetry_generate' + '\n'
                                     if fix_all_cell:
                                         filestring += 'fix_all_cell ' + 'true' + '\n'
+                                    if fix_vol:
+                                        filestring += 'fix_vol ' + 'true' + '\n'
                                     filestring += '!'
 
                                     inputfile.write(filestring)                                
@@ -367,7 +371,7 @@ if __name__ == '__main__':
                                 paramstring += 'num_dump_cycles : ' + NUM_DUMP_CYCLES + '\n'
                                 paramstring += 'write_formatted_density : TRUE'
 
-                                with open((FILE_HEADER+str(loop) + '_dir/' + FILE_HEADER+str(loop)+'.param').replace('-','_'),'w') as paramfile:
+                                with open((FILE_HEADER+str(loop).replace('.','_') + '_dir/' + FILE_HEADER+str(loop).replace('.','_')+'.param'),'w') as paramfile:
                                     paramfile.write(paramstring)
 
                                 directory = os.getcwd()
@@ -386,11 +390,11 @@ if __name__ == '__main__':
                                 # sbatchstring += '\n'
                                 # sbatchstring += '. mpi.sh' + '\n'
                                 sbatchstring += '\n'
-                                sbatchstring += 'mpiexec -n ' + MPIEXEC_THREAD + ' ' +  COMMAND + ' ' + (FILE_HEADER+str(loop)).replace("-","_") + ' ' + OPTION + '\n'
+                                sbatchstring += 'mpiexec -n ' + MPIEXEC_THREAD + ' ' +  COMMAND + ' ' + (FILE_HEADER+str(loop).replace('.','_')) + ' ' + OPTION + '\n'
 
-                                with open((FILE_HEADER+str(loop) + '_dir/' + FILE_HEADER+str(loop)+'.sh').replace('-','_'),'w') as sbatchfile:
+                                with open((FILE_HEADER+str(loop).replace('.','_') + '_dir/' + FILE_HEADER+str(loop).replace('.','_')+'.sh'),'w') as sbatchfile:
                                     sbatchfile.write(sbatchstring)
 
-                                bash.write(('cd ' + directory + '/'+ FILE_HEADER + str(loop) + '_dir/' + ' && ' + 'sbatch '  + FILE_HEADER+str(loop)+'.sh' + '\n').replace("-","_"))
+                                bash.write(('cd ' + directory + '/'+ FILE_HEADER + str(loop).replace('.','_') + '_dir/' + ' && ' + 'sbatch '  + FILE_HEADER+str(loop).replace('.','_')+'.sh' + '\n'))
 
 
