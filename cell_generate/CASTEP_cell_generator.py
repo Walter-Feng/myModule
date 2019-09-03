@@ -310,92 +310,92 @@ if __name__ == '__main__':
 
                         bash.write(('cd ' + directory + '/'+ FILE_HEADER + str(A_STEP)+'_'+str(B_STEP)+'_'+str(C_STEP) + '_dir/' + ' && ' + 'sbatch '  + FILE_HEADER+str(A_STEP)+'_'+str(B_STEP)+'_'+str(C_STEP)+'.sh' + '\n').replace("-","_"))
                     
-                    else:
-                        if VOLUME_FLAG:
-                            for loop in range(VOLUME_N_SAMPLE):
-                                vol = VOLUME_START + loop * (VOLUME_END-VOLUME_START) / (VOLUME_N_SAMPLE - 1)
-                                result = []
-                                coordstring = ""
-                                for i in range(0,A_MUL):
-                                    for j in range(0,B_MUL):
-                                        for k in range(0,C_MUL):
-                                            for atom in Atoms:
-                                                result.append([atom[0],atom[1]/A_MUL + i/A_MUL,atom[2]/A_MUL + j/A_MUL,atom[3]/C_MUL + k/C_MUL])
-                                                #result.append([atom[0],atom[1]/A_MUL + i/A_MUL,atom[2]/B_MUL + j/B_MUL,atom[3]/C_MUL + k/C_MUL])
-                                for l in result:
-                                    coordstring = coordstring + l[0] + ' ' + str(l[1]) + ' ' + str(l[2]) + ' ' + str(l[3]) + '\n'
-                                if not os.path.exists((FILE_HEADER+str(loop).replace('.','_') + '_dir/')):
-                                    os.makedirs((FILE_HEADER+str(loop).replace('.','_') + '_dir/'))
-                                with open((FILE_HEADER+str(loop).replace('.','_') + '_dir/' + FILE_HEADER+str(loop)+'.cell'),'w') as inputfile:
-                                    filestring = "! " + FILE_HEADER + " VOL_STEP:" + str(loop).replace('.','_') + '\n'
-                                    filestring +='!\n'
-                                    filestring += '%block lattice_abc\n'
-                                    filestring += str(math.pow(vol,1/3) * a * A_MUL) + ' ' + str(math.pow(vol,1/3) * b * B_MUL) + ' ' + str(math.pow(vol,1/3) * c * C_MUL)+'\n'
-                                    filestring += str(rad_deg_convert(alpha)) + ' ' + str(rad_deg_convert(beta)) + ' ' + str(rad_deg_convert(gamma)) + '\n'
-                                    filestring += '%endblock lattice_abc\n'
-                                    filestring += '!\n'
-                                    filestring += '%block positions_frac\n'
-                                    for t in result:
-                                        filestring += t[0] + ' ' + str(t[1]) + ' ' + str(t[2]) + ' ' + str(t[3]) + '\n'
-                                    filestring += '%endblock positions_frac\n'
-                                    filestring += '!\n'
-                                    filestring += 'kpoint_mp_grid' + ' ' + str(KPOINT_X) + ' ' + str(KPOINT_Y) + ' ' + str(KPOINT_Z) + '\n'
-                                    if symmetry_generate:
-                                        filestring += 'symmetry_generate' + '\n'
-                                    if fix_all_cell:
-                                        filestring += 'fix_all_cell ' + 'true' + '\n'
-                                    if fix_vol:
-                                        filestring += 'fix_vol ' + 'true' + '\n'
-                                    filestring += '!'
+            else:
+                if VOLUME_FLAG:
+                    for loop in range(VOLUME_N_SAMPLE):
+                        vol = VOLUME_START + loop * (VOLUME_END-VOLUME_START) / (VOLUME_N_SAMPLE - 1)
+                        result = []
+                        coordstring = ""
+                        for i in range(0,A_MUL):
+                            for j in range(0,B_MUL):
+                                for k in range(0,C_MUL):
+                                    for atom in Atoms:
+                                        result.append([atom[0],atom[1]/A_MUL + i/A_MUL,atom[2]/A_MUL + j/A_MUL,atom[3]/C_MUL + k/C_MUL])
+                                        #result.append([atom[0],atom[1]/A_MUL + i/A_MUL,atom[2]/B_MUL + j/B_MUL,atom[3]/C_MUL + k/C_MUL])
+                        for l in result:
+                            coordstring = coordstring + l[0] + ' ' + str(l[1]) + ' ' + str(l[2]) + ' ' + str(l[3]) + '\n'
+                        if not os.path.exists((FILE_HEADER+str(loop).replace('.','_') + '_dir/')):
+                            os.makedirs((FILE_HEADER+str(loop).replace('.','_') + '_dir/'))
+                        with open((FILE_HEADER+str(loop).replace('.','_') + '_dir/' + FILE_HEADER+str(loop)+'.cell'),'w') as inputfile:
+                            filestring = "! " + FILE_HEADER + " VOL_STEP:" + str(loop).replace('.','_') + '\n'
+                            filestring +='!\n'
+                            filestring += '%block lattice_abc\n'
+                            filestring += str(math.pow(vol,1/3) * a * A_MUL) + ' ' + str(math.pow(vol,1/3) * b * B_MUL) + ' ' + str(math.pow(vol,1/3) * c * C_MUL)+'\n'
+                            filestring += str(rad_deg_convert(alpha)) + ' ' + str(rad_deg_convert(beta)) + ' ' + str(rad_deg_convert(gamma)) + '\n'
+                            filestring += '%endblock lattice_abc\n'
+                            filestring += '!\n'
+                            filestring += '%block positions_frac\n'
+                            for t in result:
+                                filestring += t[0] + ' ' + str(t[1]) + ' ' + str(t[2]) + ' ' + str(t[3]) + '\n'
+                            filestring += '%endblock positions_frac\n'
+                            filestring += '!\n'
+                            filestring += 'kpoint_mp_grid' + ' ' + str(KPOINT_X) + ' ' + str(KPOINT_Y) + ' ' + str(KPOINT_Z) + '\n'
+                            if symmetry_generate:
+                                filestring += 'symmetry_generate' + '\n'
+                            if fix_all_cell:
+                                filestring += 'fix_all_cell ' + 'true' + '\n'
+                            if fix_vol:
+                                filestring += 'fix_vol ' + 'true' + '\n'
+                            filestring += '!'
 
-                                    inputfile.write(filestring)                                
+                            inputfile.write(filestring)                                
 
-                                paramstring = 'task : ' + TASK + '\n'
-                                paramstring += 'xc_functional : ' + XC + '\n'
-                                if SEDC_APPLY:
-                                    paramstring += 'SEDC_APPLY : ' + 'TRUE' + '\n'
-                                    paramstring += 'SEDC_SCHEME : ' + SEDC_SCHEME + '\n'
-                                else:
-                                    paramstring += 'SEDC_APPLY : ' + 'FALSE' + '\n'
-                                paramstring += 'basis_precision : ' + BASIS_PRICISION + '\n'
-                                paramstring += 'fix_occupancy : ' + "false" + '\n'
-                                paramstring += 'opt_strategy_bias : ' + OPT_STRATEGY_BIAS + '\n'
-                                paramstring += 'max_scf_cycles : ' + MAX_SCF_CYCLES + '\n'
-                                paramstring += 'geom_force_tol : ' + GEOM_FORCE_TOL + '\n'
-                                paramstring += 'elec_energy_tol : ' + ELEC_ENERGY_TOL + '\n'
-                                paramstring += 'geom_stress_tol : ' + GEOM_STRESS_TOL + '\n'
-                                paramstring += 'geom_max_iter : ' + GEOM_MAX_ITER + '\n'
-                                paramstring += 'geom_disp_tol : ' + GEOM_DISP_TOL + '\n'
-                                paramstring += 'geom_modulus_est : ' + GEOM_MODULUS_EST + '\n'
-                                paramstring += 'popn_calculate : ' + POPN_CALCULATE + '\n'
-                                paramstring += 'energy_unit : ' + ENERGY_UNIT + '\n'
-                                paramstring += 'num_dump_cycles : ' + NUM_DUMP_CYCLES + '\n'
-                                paramstring += 'write_formatted_density : TRUE'
+                        paramstring = 'task : ' + TASK + '\n'
+                        paramstring += 'xc_functional : ' + XC + '\n'
+                        if SEDC_APPLY:
+                            paramstring += 'SEDC_APPLY : ' + 'TRUE' + '\n'
+                            paramstring += 'SEDC_SCHEME : ' + SEDC_SCHEME + '\n'
+                        else:
+                            paramstring += 'SEDC_APPLY : ' + 'FALSE' + '\n'
+                        paramstring += 'basis_precision : ' + BASIS_PRICISION + '\n'
+                        paramstring += 'fix_occupancy : ' + "false" + '\n'
+                        paramstring += 'opt_strategy_bias : ' + OPT_STRATEGY_BIAS + '\n'
+                        paramstring += 'max_scf_cycles : ' + MAX_SCF_CYCLES + '\n'
+                        paramstring += 'geom_force_tol : ' + GEOM_FORCE_TOL + '\n'
+                        paramstring += 'elec_energy_tol : ' + ELEC_ENERGY_TOL + '\n'
+                        paramstring += 'geom_stress_tol : ' + GEOM_STRESS_TOL + '\n'
+                        paramstring += 'geom_max_iter : ' + GEOM_MAX_ITER + '\n'
+                        paramstring += 'geom_disp_tol : ' + GEOM_DISP_TOL + '\n'
+                        paramstring += 'geom_modulus_est : ' + GEOM_MODULUS_EST + '\n'
+                        paramstring += 'popn_calculate : ' + POPN_CALCULATE + '\n'
+                        paramstring += 'energy_unit : ' + ENERGY_UNIT + '\n'
+                        paramstring += 'num_dump_cycles : ' + NUM_DUMP_CYCLES + '\n'
+                        paramstring += 'write_formatted_density : TRUE'
 
-                                with open((FILE_HEADER + str(loop).replace('.','_') + '_dir/' + FILE_HEADER + str(loop).replace('.','_')+'.param'),'w') as paramfile:
-                                    paramfile.write(paramstring)
+                        with open((FILE_HEADER + str(loop).replace('.','_') + '_dir/' + FILE_HEADER + str(loop).replace('.','_')+'.param'),'w') as paramfile:
+                            paramfile.write(paramstring)
 
-                                directory = os.getcwd()
-                                sbatchstring = '#!/bin/sh' + '\n'
-                                sbatchstring += '#SBATCH --job-name=' + JOB_NAME + '\n'
-                                sbatchstring += '#SBATCH --partition=' + PARTITION + '\n'
-                                sbatchstring += '#SBATCH --nodes=' + NODES + '\n'
-                                sbatchstring += '#SBATCH --tasks-per-node=' + TASKS_PER_NODE + '\n'
-                                sbatchstring += '#SBATCH --cpus-per-task=' + CPUS_PER_TASK + '\n'
-                                sbatchstring += '#SBATCH --time=' + TIME + '\n'
-                                # sbatchstring += '#SBATCH --mail-type=' + MAIL_TYPE + '\n'
-                                sbatchstring += '\n'
-                                sbatchstring += 'cd $SLURM_SUBMIT_DIR' + '\n'
-                                # sbatchstring += 'source ' + BASHRCDIR + '\n'
-                                sbatchstring += 'module load ' + 'apps/castep/18.1' + '\n'
-                                # sbatchstring += '\n'
-                                # sbatchstring += '. mpi.sh' + '\n'
-                                sbatchstring += '\n'
-                                sbatchstring += 'mpiexec -n ' + MPIEXEC_THREAD + ' ' +  COMMAND + ' ' + (FILE_HEADER+str(loop).replace('.','_')) + ' ' + OPTION + '\n'
+                        directory = os.getcwd()
+                        sbatchstring = '#!/bin/sh' + '\n'
+                        sbatchstring += '#SBATCH --job-name=' + JOB_NAME + '\n'
+                        sbatchstring += '#SBATCH --partition=' + PARTITION + '\n'
+                        sbatchstring += '#SBATCH --nodes=' + NODES + '\n'
+                        sbatchstring += '#SBATCH --tasks-per-node=' + TASKS_PER_NODE + '\n'
+                        sbatchstring += '#SBATCH --cpus-per-task=' + CPUS_PER_TASK + '\n'
+                        sbatchstring += '#SBATCH --time=' + TIME + '\n'
+                        # sbatchstring += '#SBATCH --mail-type=' + MAIL_TYPE + '\n'
+                        sbatchstring += '\n'
+                        sbatchstring += 'cd $SLURM_SUBMIT_DIR' + '\n'
+                        # sbatchstring += 'source ' + BASHRCDIR + '\n'
+                        sbatchstring += 'module load ' + 'apps/castep/18.1' + '\n'
+                        # sbatchstring += '\n'
+                        # sbatchstring += '. mpi.sh' + '\n'
+                        sbatchstring += '\n'
+                        sbatchstring += 'mpiexec -n ' + MPIEXEC_THREAD + ' ' +  COMMAND + ' ' + (FILE_HEADER+str(loop).replace('.','_')) + ' ' + OPTION + '\n'
 
-                                with open((FILE_HEADER+str(loop).replace('.','_') + '_dir/' + FILE_HEADER+str(loop).replace('.','_')+'.sh'),'w') as sbatchfile:
-                                    sbatchfile.write(sbatchstring)
+                        with open((FILE_HEADER+str(loop).replace('.','_') + '_dir/' + FILE_HEADER+str(loop).replace('.','_')+'.sh'),'w') as sbatchfile:
+                            sbatchfile.write(sbatchstring)
 
-                                bash.write(('cd ' + directory + '/'+ FILE_HEADER + str(loop).replace('.','_') + '_dir/' + ' && ' + 'sbatch '  + FILE_HEADER+str(loop).replace('.','_')+'.sh' + '\n'))
+                        bash.write(('cd ' + directory + '/'+ FILE_HEADER + str(loop).replace('.','_') + '_dir/' + ' && ' + 'sbatch '  + FILE_HEADER+str(loop).replace('.','_')+'.sh' + '\n'))
 
 
