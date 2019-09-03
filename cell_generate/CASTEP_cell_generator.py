@@ -312,7 +312,8 @@ if __name__ == '__main__':
                     
                     else:
                         if VOLUME_FLAG:
-                            for loop in [VOLUME_START + i * (VOLUME_END-VOLUME_START) / (VOLUME_N_SAMPLE - 1) for i in range(VOLUME_N_SAMPLE)]:
+                            for loop in range(VOLUME_N_SAMPLE):
+                                vol = VOLUME_START + loop * (VOLUME_END-VOLUME_START) / (VOLUME_N_SAMPLE - 1)
                                 result = []
                                 coordstring = ""
                                 for i in range(0,A_MUL):
@@ -323,13 +324,13 @@ if __name__ == '__main__':
                                                 #result.append([atom[0],atom[1]/A_MUL + i/A_MUL,atom[2]/B_MUL + j/B_MUL,atom[3]/C_MUL + k/C_MUL])
                                 for l in result:
                                     coordstring = coordstring + l[0] + ' ' + str(l[1]) + ' ' + str(l[2]) + ' ' + str(l[3]) + '\n'
-                                if not os.path.exists((FILE_HEADER+str(loop) + '_dir/').replace('-','_')):
-                                    os.makedirs((FILE_HEADER+str(loop) + '_dir/').replace('-','_'))
-                                with open((FILE_HEADER+str(loop) + '_dir/' + FILE_HEADER+str(loop)+'.cell').replace('-','_'),'w') as inputfile:
-                                    filestring = "! " + FILE_HEADER + " VOL_STEP:" + str(loop) + '\n'
+                                if not os.path.exists((FILE_HEADER+str(loop).replace('.','_') + '_dir/')):
+                                    os.makedirs((FILE_HEADER+str(loop).replace('.','_') + '_dir/'))
+                                with open((FILE_HEADER+str(loop).replace('.','_') + '_dir/' + FILE_HEADER+str(loop)+'.cell'),'w') as inputfile:
+                                    filestring = "! " + FILE_HEADER + " VOL_STEP:" + str(loop).replace('.','_') + '\n'
                                     filestring +='!\n'
                                     filestring += '%block lattice_abc\n'
-                                    filestring += str(math.pow(loop,1/3) * a) + ' ' + str(math.pow(loop,1/3) * b) + ' ' + str(math.pow(loop,1/3) * c)+'\n'
+                                    filestring += str(math.pow(vol,1/3) * a * A_MUL) + ' ' + str(math.pow(vol,1/3) * b * B_MUL) + ' ' + str(math.pow(vol,1/3) * c * C_MUL)+'\n'
                                     filestring += str(rad_deg_convert(alpha)) + ' ' + str(rad_deg_convert(beta)) + ' ' + str(rad_deg_convert(gamma)) + '\n'
                                     filestring += '%endblock lattice_abc\n'
                                     filestring += '!\n'
@@ -371,7 +372,7 @@ if __name__ == '__main__':
                                 paramstring += 'num_dump_cycles : ' + NUM_DUMP_CYCLES + '\n'
                                 paramstring += 'write_formatted_density : TRUE'
 
-                                with open((FILE_HEADER+str(loop).replace('.','_') + '_dir/' + FILE_HEADER+str(loop).replace('.','_')+'.param'),'w') as paramfile:
+                                with open((FILE_HEADER + str(loop).replace('.','_') + '_dir/' + FILE_HEADER + str(loop).replace('.','_')+'.param'),'w') as paramfile:
                                     paramfile.write(paramstring)
 
                                 directory = os.getcwd()
