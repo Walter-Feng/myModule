@@ -215,3 +215,52 @@ def band_combine(band_list):
 
     return result
 
+
+# generate a list of k points between two special points
+def path_k_points_generate(start_coord,end_coord,samples):
+    return np.array([start_coord + (end_coord-start_coord)*i/(samples-1) for i in range(samples)])
+
+# split the array into subarrays with different length specified by split_list
+# example:  [1,2,3,4,5,6] --split by [2,3,1]---> [[1,2,3],[4,5],[6]]
+def array_split(array,split_list):
+    result = []
+    counter = 0
+    for i in split_list:
+        result.append(array[counter:counter+i])
+        counter = counter + i
+    
+    return result
+
+# add the starting special point of each subarray from the previous subarray, a bit like 'healing' or 'complementing' each band
+# example [1,2,3,4,5,6,7] ---split by [1,2,2,2] ----> [[1],[2,3],[4,5],[6,7]] ----heal----> [[1,2,3],[3,4,5],[5,6,7]]
+def split_array_heal(array):
+    INIT_FLAG = False
+    result = []
+
+    for i in array:
+        if INIT_FLAG:
+            i.insert(0,mem[-1])
+            result.append(i)
+        INIT_FLAG = True
+        mem = i
+
+    return result
+
+def np_array_append_math_inf(array,num):
+    if num<0:
+        return array
+    else:
+        return np.append(array,np.array([math.inf for i in range(num)]))
+
+def np_array_fill_math_inf(array,total):
+    length = len(array)
+    return np_array_append_math_inf(array,total-length)
+
+def dict_inv_enquiry(dictionary,value):
+    for i in dictionary:
+        if dictionary[i] == value:
+            return i
+        
+    return value
+
+flatten = lambda l: [item for sublist in l for item in sublist]
