@@ -3,57 +3,52 @@ import band
 import re
 import math
 
-CASTEP_KPOINT_MATCH = re.compile(r"[ ]*K\-point[ ]+(?P<index>[\d]+)[ ]+(?P<x>[\.\d]+)[ ]+(?P<y>[\.\d]+)[ ]+(?P<z>[\.\d]+)[ ]+")
+CASTEP_MATCH = re.compile(r"^[ ]*(?P<index>\d+)[ ]+(?P<x>\S+)[ ]+(?P<y>\S+)[ ]+(?P<z>\S+)[ ]+(?P<fl_x>\S+)(?P<evals>.+)$",re.MULTILINE)
+
+FCC_SPECIAL_POINT_DICT = {
+    'G': [0,0,0],
+    'X': [0.0,0.5,0.5],
+    'W': [0.25,0.75,0.5],
+    'K': [0.375,0.75,0.375],
+    'L': [0.5,0.5,0.5],
+    'U': [0.25,0.625,0.625]
+}
 
 
-def kpoints(castep_cell_string):
+def extract(enhanced_band_dir):
+    with open(enhanced_band_dir,"r") as f:
+        string = f.read()
 
-    INIT_FLAG = False
-    labels_list = []
-    array = []
-    num_list = []
+        packs = np.array(list(map(lambda x:list(map(eval,x)),[list(i.groups())[:-2] for i in CASTEP_MATCH.finditer(string)])))
 
-    for kpoints in DFTB_KPOINT_MATCH.finditer(dftb_string):
-        kpoint = kpoints.groupdict()
+        coordinates_list = packs[:,1:4]
+        
 
-        label_current = kpoint['name']
-        current = np.array([eval(kpoint['x']),eval(kpoint['y']),eval(kpoint['z'])])
+        evals_list = np.array([list(map(float,i.groupdict()['evals'].split())) for i in CASTEP_MATCH.finditer(string)])
+        
+        fl_x_list = np.array([float(i.groupdict()['fl_x']) for i in CASTEP_MATCH.finditer(string)])
+ 
+        return coordinates_list,fl_x_list,evals_list
 
-        if INIT_FLAG:
-            labels_list.append([label_mem,label_current])
+def to_full_bands(enhanced_band_dir,dictionary):
+    coordinates_list,fl_x_list,evals_list = extract(enhanced_band_dir)
 
-        INIT_FLAG = True
-        label_mem = kpoint['name']
-        mem = np.array([eval(kpoint['x']),eval(kpoint['y']),eval(kpoint['z'])])
+    coordinates_list_search_result = [band.dict_inv_search(band.FCC_SPECIAL_POINT_DICT,i) for i in coordinates_list]
 
-    
+    evals_list = band.split_in_list(evals_list,coordinates_list_search_result)
+    evals_list = band.split_array_heal(evals_list)
 
-    return labels_list,num_list,np.array(array)
+    k_points_list = band.split_dict(coordinates_list,dictionary)
+    k_points_list = band.split_array_heal(k_points_list)
 
+    x_ticks_list = band.filter_dict(coordinates_list,dictionary)
+    label_list = band.filter_convert_dict(x_ticks_list,dictionary)
 
+    labels_list = band.label_list_heal(label_list)
 
-def evals(dftb_out_string,num_list):
-
-    array = []
-
-    lists = dftb_out_string.split("\n")
-    lists.remove('')
-    for i in lists:
-        bands = i.split()
-        del bands[0]
-        array.append(list(map(eval,bands)))
-
-    return split_array_heal(array_split(array,num_list))
+    return band.to_full_bands_template(k_points_list,evals_list,labels_list)
 
 
-def to_full_bands(dftb_dir):
-    with open(dftb_dir + "/dftb_in.hsd",'r') as f:
-        inputfile = f.read()
-        labels_list,num_list,k_points_list = dftb_kpoints(inputfile)
 
-    with open(dftb_dir + "/band_tot.dat",'r') as f:
-        outputfile = f.read()
-        evals = dftb_evals(outputfile,num_list)
 
-    return band.full_bands([band.bands(k_points_list[i],evals[i],start_label=labels_list[i][0],end_label=labels_list[i][1]) for i in range(len(k_points_list))])
 
