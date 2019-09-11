@@ -205,6 +205,16 @@ class full_bands(object):
     def find_zero_point(self,HOMO_index):
         return max(flatten([[j[HOMO_index] for j in i] for i in self.__evals_list]))
 
+    def get_band_gap(self,HOMO_index,LUMO_index):
+        Fermi_energy = max(flatten([[j[HOMO_index] for j in i] for i in self.__evals_list]))
+        LUMO_energy = min(flatten([[j[LUMO_index] for j in i] for i in self.__evals_list]))
+        self.band_gap = LUMO_energy - Fermi_energy
+        return self.band_gap
+
+    def print_band_gap(self):
+        print('Band gap : ' + str(self.band_gap) + ' ' + self.__unit)
+
+
     def set_zero_point(self,HOMO_index):
         self.__evals_list = [[[i - self.find_zero_point(HOMO_index) for i in j] for j in k] for k in self.__evals_list]
 
@@ -346,3 +356,4 @@ def label_list_heal(label_list):
 
 def to_full_bands_template(k_points_list,eigenvalues,labels_list):
     return full_bands([bands(k_points_list[i],eigenvalues[i],start_label=labels_list[i][0],end_label=labels_list[i][1]) for i in range(len(k_points_list))])
+
