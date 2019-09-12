@@ -1,4 +1,5 @@
 import atom
+import re
 
 XC_LIST = [
     'B3LYP','B3P86','O3LYP',   # Becke Three-Parameter Hybrid Functionals
@@ -24,6 +25,17 @@ BASIS_SET = [
     'cc-pvdz','cc-pvtz','lanl2dz','lanl2mb','sdd','dgdzvp','dgdzvp2','gen','genecp'
 ]
 
+CHK_MATCH = re.compile(r"^[ ]*%(?P<chk>\S+)$", re.MULTILINE)
+
+METHOD_MATCH = re.compile(r"^[ ]*#[ ]+(?P<type>.+?)[ ]+(?P<method>\S+)[ ]*\/[ ]*(?P<basis>\S+)[ ]+(?P<option>.*)$",
+                          re.MULTILINE)
+
+CHARGE_SPIN_MATCH = re.compile(r"^[ ]*(?P<charge>\d+)[ ]+(?P<spin>\d+)[ ]*$", re.MULTILINE)
+
+ATOMS_MATCH = re.compile(r"[ ]*(?P<label>[a-zA-Z]+)[ ]*(?P<x>[\d\.\-]+)[ ]*(?P<y>[\d\.\-]+)[ ]*(?P<z>[\d\.\-]+)")
+
+GEOM_MATCH = re.compile(r"^(?P<geom>[ ]+\d+.*)$", re.MULTILINE)
+
 
 class gaussian_input(object):
     def __init__(self):
@@ -34,11 +46,13 @@ class gaussian_input(object):
         self.modredundant_string = ''
         self.freq = False
         self.raman = False
+        self.methodstring = 'NOT DEFINED'
         self.titlecard = 'Title Card Required'
         self.filename = 'Noname'
         self.chkfilename = self.filename
         self.geom = False
         self.geom_string = ''
+        self.option = 'NOT DEFINED'
         self.charge = 0
         self.spin = 1
         self.filestring = ''
@@ -47,21 +61,22 @@ class gaussian_input(object):
     def tostring(self):
         chkstring = '%' + 'chk=' + self.chkfilename + '.chk'
 
-        methodstring = '#'
-        if self.opt:
-            methodstring += ' opt'
-            if self.modredundant:
-                methodstring += '=modredundant'
+        if self.methodstring == 'NOT DEFINED':
+            self.methodstring = '#'
+            if self.opt:
+                self.methodstring += ' opt'
+                if self.modredundant:
+                    self.methodstring += '=modredundant'
 
-        if self.freq:
-            methodstring += ' freq'
-            if self.raman:
-                methodstring += '(raman,savenormalmodes)'
+            if self.freq:
+                self.methodstring += ' freq'
+                if self.raman:
+                    self.methodstring += '(raman,savenormalmodes)'
 
-        methodstring += ' ' + self.xc
-        methodstring += '/' + self.basis_set
-        if self.geom_string:
-            methodstring += ' geom=connectivity'
+            self.methodstring += ' ' + self.xc
+            self.methodstring += '/' + self.basis_set
+            if self.geom_string:
+                self.methodstring += ' geom=connectivity'
 
         charge_spin_string = str(self.charge) + ' ' + str(self.spin)
 
@@ -72,7 +87,7 @@ class gaussian_input(object):
                 atoms_string += str(j).ljust(16)
             atoms_string += '\n'
 
-        self.filestring = chkstring + '\n' + methodstring + '\n\n' + self.titlecard + '\n\n'
+        self.filestring = chkstring + '\n' + self.methodstring + '\n\n' + self.titlecard + '\n\n'
         self.filestring += charge_spin_string + '\n'
         self.filestring += atoms_string + '\n' + self.geom_string
         self.filestring += '\n\n' + self.modredundant_string
@@ -85,3 +100,68 @@ class gaussian_input(object):
         with open(dir+self.filename+postfix, 'w') as f:
             f.write(self.filestring)
 
+    def filestring_regenerate(self):
+        self.methodstring = 'NOT DEFINED'
+        self.tostring()
+
+
+# The string should be analogous to: " H      1.0000  -1.0000000 1.00000  INFO"
+def atom_template(atom_string):
+    split_string = atom_string.split()
+    label = split_string[0]
+    cartesian = list(map(float,split_string[1:4]))
+
+    return atom.atom(atom.dict_inv_enquiry(label), cartesian=cartesian)
+
+
+def gaussian_input_read(file_dir, verbose=0):
+    with open(file_dir, 'r') as f:
+        filestring = f.read()
+
+        atom_list = [atom_template(i.group(0)) for i in ATOMS_MATCH.finditer(filestring)]
+
+        methodstring = METHOD_MATCH.search(filestring)
+        method_dict = methodstring.groupdict()
+        methodstring = methodstring.group(0)
+        type = method_dict['type']
+        method = method_dict['method']
+        basis = method_dict['basis']
+        option = method_dict['option']
+
+        charge_spin_string = CHARGE_SPIN_MATCH.search(filestring)
+        charge_spin_string = charge_spin_string.groupdict()
+        charge = int(charge_spin_string['charge'])
+        spin = int(charge_spin_string['spin'])
+
+        geom_string = "\n".join([i.groupdict()['geom'] for i in GEOM_MATCH.finditer(filestring)])
+
+        result = gaussian_input()
+
+        if verbose == 0:
+            result.methodstring = methodstring
+        else:
+            result.type = type
+            result.xc = method
+            result.basis_set = basis
+            result.option = option
+
+            if verbose == 1:
+                result.option = option
+
+        result.charge = charge
+        result.spin = spin
+        result.atoms = atom_list
+        result.geom_string = geom_string
+
+        return result
+
+
+def xyz_file_read(file_dir):
+    with open(file_dir, 'r') as f:                                                                         
+        filestring = f.read()
+
+        atom_list = [atom_template(i.group(0)) for i in ATOMS_MATCH.finditer(filestring)]
+        result = gaussian_input()
+
+        result.atoms = atom_list
+        return result
