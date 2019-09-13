@@ -10,8 +10,8 @@ ENTOS_FILENAME_MATCH = re.compile(r"(?P<filename>[a-zA-z \\\-_\d]+?\.json)")
 def band_coordinates_list(band_path_dict):
     n_samples = band_path_dict['n_samples']
 
-    start_coordinate = np.array(band_path_dict['symmetry_point_start'])
-    end_coordinate = np.array(band_path_dict['symmetry_point_end'])
+    start_coordinate = np.array(band_path_dict['k_point_start'])
+    end_coordinate = np.array(band_path_dict['k_point_end'])
 
     coordinates_list = [start_coordinate + (end_coordinate - start_coordinate) * i / (n_samples - 1) for i in range(n_samples)]
 

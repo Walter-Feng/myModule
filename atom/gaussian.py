@@ -38,7 +38,7 @@ GEOM_MATCH = re.compile(r"^(?P<geom>[ ]+\d+.*)$", re.MULTILINE)
 
 
 class gaussian_input(object):
-    def __init__(self):
+    def __init__(self, filename='NONAME'):
         self.xc = 'hf'
         self.basis_set = '6-31g'
         self.opt = False
@@ -48,7 +48,7 @@ class gaussian_input(object):
         self.raman = False
         self.methodstring = 'NOT DEFINED'
         self.titlecard = 'Title Card Required'
-        self.filename = 'Noname'
+        self.filename = filename
         self.chkfilename = self.filename
         self.geom = False
         self.geom_string = ''
@@ -84,7 +84,7 @@ class gaussian_input(object):
         for i in self.atoms:
             atoms_string += ' ' + i.get_label().ljust(18)
             for j in i.get_cartesian():
-                atoms_string += str(j).ljust(16)
+                atoms_string += str(float(j)).ljust(16)
             atoms_string += '\n'
 
         self.filestring = chkstring + '\n' + self.methodstring + '\n\n' + self.titlecard + '\n\n'
@@ -97,8 +97,32 @@ class gaussian_input(object):
         self.chkfilename = self.filename
 
     def write(self, dir='', postfix='.com'):
-        with open(dir+self.filename+postfix, 'w') as f:
-            f.write(self.filestring)
+
+        if dir == '':
+            with open(dir+self.filename+postfix, 'w') as f:
+                f.write(self.filestring)
+
+        else:
+            if re.match(r"^.+?\/$", dir):
+                with open(dir+self.filename+postfix, 'w') as f:
+                    f.write(self.filestring)
+
+            else:
+                if re.match(r"^.+\.com$", dir):
+                    with open(dir, 'w') as f:
+                        self.filename = dir[:-5]
+                        self.chkfilename = dir[:-5]
+                        self.tostring()
+
+                        f.write(self.filestring)
+
+                else:
+                    with open(dir+postfix, 'w') as f:
+                        self.chkfilename = dir
+                        self.filename = dir
+                        self.tostring()
+
+                        f.write(self.filestring)
 
     def filestring_regenerate(self):
         self.methodstring = 'NOT DEFINED'
@@ -109,9 +133,9 @@ class gaussian_input(object):
 def atom_template(atom_string):
     split_string = atom_string.split()
     label = split_string[0]
-    cartesian = list(map(float,split_string[1:4]))
+    cartesian = list(map(float, split_string[1:4]))
 
-    return atom.atom(atom.dict_inv_enquiry(label), cartesian=cartesian)
+    return atom.atom(atom.dict_inv_enquiry(label, atom.PERIODIC_TABLE), cartesian=cartesian)
 
 
 def gaussian_input_read(file_dir, verbose=0):

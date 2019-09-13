@@ -304,6 +304,7 @@ def bond_dihedral_angle(a_atom, b_atom, c_atom, d_atom):
                      / math.sqrt(norm(axis_removed_dc)))
 
 
+# all atoms in `group' should be bound to a_atom
 def set_bond_length(a_atom, b_atom, length, group=None):
     vec = np.array(b_atom.get_cartesian()) - np.array(a_atom.get_cartesian())
     change = (math.sqrt(norm(vec)) - length) / math.sqrt(norm(vec)) * vec
@@ -315,6 +316,7 @@ def set_bond_length(a_atom, b_atom, length, group=None):
         a_atom.set_cartesian(list(np.array(a_atom.get_cartesian()) + change))
 
 
+# all atoms in `group' should be bound to a_atom
 def set_bond_angle(a_atom, center_atom, b_atom, angle, group=None):
     original_angle = bond_angle(a_atom, center_atom, b_atom)
     ac = np.array(a_atom.get_cartesian()) - np.array(center_atom.get_cartesian())
@@ -331,6 +333,7 @@ def set_bond_angle(a_atom, center_atom, b_atom, angle, group=None):
         a_atom.set_cartesian(rotation(a_atom.get_cartesian(), center_atom.get_cartesian(), axis, change))
 
 
+# all atoms in `group' should be bound to a_atom
 def set_bond_dihedral_angle(a_atom, b_atom, c_atom, d_atom, angle, group=None):
     axis = np.array(b_atom.get_cartesian()) - np.array(c_atom.get_cartesian())
     original_angle = bond_dihedral_angle(a_atom, b_atom, c_atom, d_atom)
