@@ -96,30 +96,30 @@ class gaussian_input(object):
     def chkfile_sync(self):
         self.chkfilename = self.filename
 
-    def write(self, dir='', postfix='.com'):
+    def write(self, directory='', postfix='.com'):
 
-        if dir == '':
-            with open(dir+self.filename+postfix, 'w') as f:
+        if directory == '':
+            with open(directory+self.filename+postfix, 'w') as f:
                 f.write(self.filestring)
 
         else:
-            if re.match(r"^.+?\/$", dir):
-                with open(dir+self.filename+postfix, 'w') as f:
+            if re.match(r"^.+?\/$", directory):
+                with open(directory+self.filename+postfix, 'w') as f:
                     f.write(self.filestring)
 
             else:
-                if re.match(r"^.+\.com$", dir):
-                    with open(dir, 'w') as f:
-                        self.filename = dir[:-5]
-                        self.chkfilename = dir[:-5]
+                if re.match(r"^.+\.com$", directory):
+                    with open(directory, 'w') as f:
+                        self.filename = directory[:-5]
+                        self.chkfilename = directory[:-5]
                         self.tostring()
 
                         f.write(self.filestring)
 
                 else:
-                    with open(dir+postfix, 'w') as f:
-                        self.chkfilename = dir
-                        self.filename = dir
+                    with open(directory+postfix, 'w') as f:
+                        self.chkfilename = directory
+                        self.filename = directory
                         self.tostring()
 
                         f.write(self.filestring)
@@ -138,8 +138,8 @@ def atom_template(atom_string):
     return atom.atom(atom.dict_inv_enquiry(label, atom.PERIODIC_TABLE), cartesian=cartesian)
 
 
-def gaussian_input_read(file_dir, verbose=0):
-    with open(file_dir, 'r') as f:
+def gaussian_input_read(file_directory, verbose=0):
+    with open(file_directory, 'r') as f:
         filestring = f.read()
 
         atom_list = [atom_template(i.group(0)) for i in ATOMS_MATCH.finditer(filestring)]
@@ -180,8 +180,8 @@ def gaussian_input_read(file_dir, verbose=0):
         return result
 
 
-def xyz_file_read(file_dir):
-    with open(file_dir, 'r') as f:                                                                         
+def xyz_file_read(file_directory):
+    with open(file_directory, 'r') as f:
         filestring = f.read()
 
         atom_list = [atom_template(i.group(0)) for i in ATOMS_MATCH.finditer(filestring)]
