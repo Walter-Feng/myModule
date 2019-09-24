@@ -1,9 +1,5 @@
-import re
 import argparse
-import scipy
 import os
-import scipy.optimize
-import numpy as np
 import math
 
 FILE_HEADER = ''
@@ -55,15 +51,15 @@ if __name__ == '__main__':
             f = fhandle.read()
 
             for i in range(VOLUME_N_SAMPLE):
-                amp = math.pow(VOLUME_START - (VOLUME_START - VOLUME_END) * i / (VOLUME_N_SAMPLE - 1))
+                amp = math.pow(VOLUME_START - (VOLUME_START - VOLUME_END) * i / (VOLUME_N_SAMPLE - 1),1/3)
                 f.replace(targetstring, str(A * amp) + " " + str(C * amp))
 
                 if not os.path.exists((FILE_HEADER+ str(i) + '_dir/').replace('-', '_')):
                     os.makedirs((FILE_HEADER + str(i) + '_dir/').replace('-', '_'))
-                    with open(FILE_HEADER + str(i) + "_dir/" + "INPUT") as inputfile:
+                    with open(FILE_HEADER + str(i) + "_dir/" + "INPUT", "w") as inputfile:
                         inputfile.write(f)
 
-                    with open(FILE_HEADER + str(i) + "_dir/" + "PBS") as PBSfile:
+                    with open(FILE_HEADER + str(i) + "_dir/" + "PBS", "w") as PBSfile:
                         pbstring = "#PBS -N " +  JOB_NAME + "\n"
                         pbstring += "#PBS -l nodes=" + NODES + ":ppn=" + TASKS_PER_NODE + "\n"
                         pbstring += "#PBS -q " + PARTITION + "\n"
