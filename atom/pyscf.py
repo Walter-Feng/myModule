@@ -31,8 +31,9 @@ class pyscf_rhf_input(object):
             atoms_string += '\n'
 
         self.filestring += atoms_string
+        self.filestring += "'''\n,"
         self.filestring += '\n\n'
-        self.filestring += 'basis=' + self.basis_set + "\n\n"
+        self.filestring += 'basis=' + "'" + self.basis_set + "'" + "\n\n"
         self.filestring += ")\n\n"
         self.filestring += "print(\"AO_LABELS:\")\n"
         self.filestring += "print(gto.ao_labels(mol))\n"
@@ -103,8 +104,9 @@ class pyscf_dft_input(object):
             atoms_string += '\n'
 
         self.filestring += atoms_string
+        self.filestring += "'''\n,"
         self.filestring += '\n\n'
-        self.filestring += 'basis=' + self.basis_set + "\n\n"
+        self.filestring += 'basis=' + "'" + self.basis_set + "'" + "\n\n"
         self.filestring += ")\n\n"
         self.filestring += "print(\"AO_LABELS:\")\n"
         self.filestring += "print(gto.ao_labels(mol))\n"
@@ -148,7 +150,6 @@ class pyscf_dft_input(object):
                         f.write(self.filestring)
 
 
-
 # The string should be analogous to: " H  1.0000  -1.0000000 1.00000  INFO"
 def atom_template(atom_string):
     split_string = atom_string.split()
@@ -167,6 +168,7 @@ def xyz_file_read_to_rhf(file_directory):
 
         result.atoms = atom_list
         return result
+
 
 def xyz_file_read_to_dft(file_directory):
     with open(file_directory, 'r') as f:
