@@ -1,5 +1,6 @@
 import atom
 import re
+from atom import gaussian_match
 
 XC_LIST = [
     'B3LYP','B3P86','O3LYP',   # Becke Three-Parameter Hybrid Functionals
@@ -24,17 +25,6 @@ BASIS_SET = [
     '6-31g','6-311g', '6-31+g','6-31++g',
     'cc-pvdz','cc-pvtz','lanl2dz','lanl2mb','sdd','dgdzvp','dgdzvp2','gen','genecp'
 ]
-
-CHK_MATCH = re.compile(r"^[ ]*%(?P<chk>\S+)$", re.MULTILINE)
-
-METHOD_MATCH = re.compile(r"^[ ]*#[ ]+(?P<type>.+?)[ ]+(?P<method>\S+)[ ]*\/[ ]*(?P<basis>\S+)[ ]+(?P<option>.*)$",
-                          re.MULTILINE)
-
-CHARGE_SPIN_MATCH = re.compile(r"^[ ]*(?P<charge>\d+)[ ]+(?P<spin>\d+)[ ]*$", re.MULTILINE)
-
-ATOMS_MATCH = re.compile(r"[ ]*(?P<label>[a-zA-Z]+)[ ]*(?P<x>[\d\.\-]+)[ ]*(?P<y>[\d\.\-]+)[ ]*(?P<z>[\d\.\-]+)")
-
-GEOM_MATCH = re.compile(r"^(?P<geom>[ ]+\d+.*)$", re.MULTILINE)
 
 
 class gaussian_input(object):
@@ -142,9 +132,9 @@ def gaussian_input_read(file_directory, verbose=0):
     with open(file_directory, 'r') as f:
         filestring = f.read()
 
-        atom_list = [atom_template(i.group(0)) for i in ATOMS_MATCH.finditer(filestring)]
+        atom_list = [atom_template(i.group(0)) for i in gaussian_match.ATOMS_MATCH.finditer(filestring)]
 
-        methodstring = METHOD_MATCH.search(filestring)
+        methodstring = gaussian_match.METHOD_MATCH.search(filestring)
         method_dict = methodstring.groupdict()
         methodstring = methodstring.group(0)
         type = method_dict['type']
@@ -152,12 +142,12 @@ def gaussian_input_read(file_directory, verbose=0):
         basis = method_dict['basis']
         option = method_dict['option']
 
-        charge_spin_string = CHARGE_SPIN_MATCH.search(filestring)
+        charge_spin_string = gaussian_match.CHARGE_SPIN_MATCH.search(filestring)
         charge_spin_string = charge_spin_string.groupdict()
         charge = int(charge_spin_string['charge'])
         spin = int(charge_spin_string['spin'])
 
-        geom_string = "\n".join([i.groupdict()['geom'] for i in GEOM_MATCH.finditer(filestring)])
+        geom_string = "\n".join([i.groupdict()['geom'] for i in gaussian_match.GEOM_MATCH.finditer(filestring)])
 
         result = gaussian_input()
 
@@ -184,7 +174,7 @@ def xyz_file_read(file_directory):
     with open(file_directory, 'r') as f:
         filestring = f.read()
 
-        atom_list = [atom_template(i.group(0)) for i in ATOMS_MATCH.finditer(filestring)]
+        atom_list = [atom_template(i.group(0)) for i in gaussian_match.ATOMS_MATCH.finditer(filestring)]
         result = gaussian_input()
 
         result.atoms = atom_list

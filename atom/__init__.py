@@ -259,8 +259,8 @@ def rotation(coordinate, ref_point, ref_vec, deg):
 
     coefficient = np.linalg.solve(tr_basis_mat, translated_cartesian)
 
-    coefficient = np.array([coefficient[0] * math.cos(deg) - coefficient[1] * math.sin(deg),
-                            coefficient[0] * math.sin(deg) + coefficient[1] * math.cos(deg),
+    coefficient = np.array([coefficient[0] * math.cos(-deg) - coefficient[1] * math.sin(-deg),
+                            coefficient[0] * math.sin(-deg) + coefficient[1] * math.cos(-deg),
                             coefficient[2]])
 
     return list(tr_basis_mat.dot(coefficient) + reference_point)
@@ -346,3 +346,16 @@ def set_bond_dihedral_angle(a_atom, b_atom, c_atom, d_atom, angle, group=None):
 
     else:
         a_atom.set_cartesian(rotation(a_atom.get_cartesian(), b_atom, axis, change))
+
+
+def atoms_to_string_template(atoms_list):
+    atoms_string = ""
+
+    for i in atoms_list:
+        atoms_string += ' ' + i.get_label().ljust(28)
+        for j in i.get_cartesian():
+            atoms_string += str(float(j)).ljust(28)
+
+        atoms_string += '\n'
+
+    return atoms_string
