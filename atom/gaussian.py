@@ -72,9 +72,9 @@ class gaussian_input(object):
 
         atoms_string = ''
         for i in self.atoms:
-            atoms_string += ' ' + i.get_label().ljust(18)
+            atoms_string += ' ' + i.get_label().ljust(28)
             for j in i.get_cartesian():
-                atoms_string += str(float(j)).ljust(16)
+                atoms_string += str(float(j)).ljust(26)
             atoms_string += '\n'
 
         self.filestring = chkstring + '\n' + self.methodstring + '\n\n' + self.titlecard + '\n\n'
