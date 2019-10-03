@@ -8,30 +8,31 @@ ENTHALPY_MATCH = re.compile(
 )
 
 VOLUME_MATCH = re.compile(
-    r"^[ ]*Current cell volume =[ ]+(?P<vol>\S+)[ ]+(?P<unit>\S+)$"
+    r"^[ ]*Current cell volume =[ ]+(?P<vol>\S+)[ ]+(?P<unit>\S+)$", re.MULTILINE
 )
 
 LATTICE_PARAM_MATCH = re.compile(
     r'''
-    ^[ ]*Lattice[ ]+parameters\(A\)[ ]+Cell[ ]+Angles[ ]*\n
+    [ ]*Lattice[ ]+parameters\(A\)[ ]+Cell[ ]+Angles[ ]*\n
     [ ]+a[ ]+=[ ]+(?P<a>\S+)[ ]+alpha[ ]+=[ ]+(?P<alpha>\S+)[ ]*\n
-    [ ]+a[ ]+=[ ]+(?P<b>\S+)[ ]+alpha[ ]+=[ ]+(?P<beta>\S+)[ ]*\n
-    [ ]+a[ ]+=[ ]+(?P<c>\S+)[ ]+alpha[ ]+=[ ]+(?P<gamma>\S+)[ ]*$
+    [ ]+b[ ]+=[ ]+(?P<b>\S+)[ ]+beta[ ]+=[ ]+(?P<beta>\S+)[ ]*\n
+    [ ]+c[ ]+=[ ]+(?P<c>\S+)[ ]+gamma[ ]+=[ ]+(?P<gamma>\S+)[ ]*
     '''
-    , re.VERBOSE
+    , re.VERBOSE | re.MULTILINE
 )
 
 CELL_MATCH = re.compile(
     r'''
-    ^[ ]*\-+[ ]*\n[ ]*Cell[ ]+Contents[ ]*\n[ ]*\-+[ ]*\s+x+\s+(?P<atoms>x.+?)x+?x+$
+    [ ]*\-+[ ]*\n[ ]*Cell[ ]+Contents[ ]*\n[ ]*\-+[ ]*\s+x+\s+(?P<atoms>x.+?)x+?x+
     '''
-    , re.VERBOSE | re.DOTALL
+    , re.VERBOSE | re.DOTALL | re.MULTILINE
 )
 
 ATOM_MATCH = re.compile(
     r'''
     ^[ ]*x[ ]+(?P<atom>\S+)[ ]+(?P<atom_num>\d+)[ ]+(?P<u>\S+)[ ]+(?P<v>\S+)[ ]+(?P<w>\S+)[ ]+x$
     '''
+    , re.MULTILINE | re.VERBOSE
 )
 
 LBFG_CONVERGE_FAIL_MATCH = re.compile("LBFGS: WARNING - Geometry optimization failed to converge after")

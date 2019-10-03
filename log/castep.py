@@ -7,6 +7,7 @@ class castep(object):
         self.energy_unit = "kj/mol"
         self.cells = []
         self.vols = []
+        self.vol_unit = "A**3"
         self.cell_params = []
         self.is_terminated = False
         self.LBFG_is_converged = False
@@ -72,9 +73,11 @@ def read_castep(castep_str):
 
     castep_obj.energies = pick_first_element(read_energy_from_castep(castep_str))
     castep_obj.cell_params = read_lattice_param_from_castep(castep_str)
-    castep_obj.vols = read_volume_from_castep(castep_str)
+    castep_obj.vols = pick_first_element(read_volume_from_castep(castep_str))
     castep_obj.cells = read_cell_from_castep(castep_str)
-    castep_obj.energy_unit = read_energy_from_castep(castep_str)[0][0]
+
+    castep_obj.energy_unit = read_energy_from_castep(castep_str)[0][1]
+    castep_obj.vol_unit = read_volume_from_castep(castep_str)[0][1]
     if castep_match.LBFG_FINAL_MATCH.search(castep_str):
         castep_obj.is_terminated = False
     else:
