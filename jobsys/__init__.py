@@ -87,12 +87,14 @@ class pbs(object):
         if self.option != '':
             script += self.option + ' '
         if self.save_output:
-            script += '>' + self.file + '.log'
+            script += '> ' + self.file + '.log'
         script += '\n'
         script += '\n'
         script += self.post_process
 
         self.script = script
+
+        return script
 
 
 
