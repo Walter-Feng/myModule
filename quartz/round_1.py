@@ -47,7 +47,8 @@ model.json = "exp_log.json"
 model.to_json(dir + filename + 'exp_input.json')
 
 with open(dir + filename + "PBS" , 'w') as pbsfile :
-    pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD")
+    pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD",
+                     env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
     pbs.time = "8:00:00"
     pbs.tasks_per_node = 4
     pbs.save_output = True
@@ -55,7 +56,8 @@ with open(dir + filename + "PBS" , 'w') as pbsfile :
     total_input.write("qsub " + dir + filename + "PBS" + "\n")
 
 with open(dir + filename + "PBS_exp", 'w') as pbsfile:
-    pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD")
+    pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
+                     env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
     pbs.time = "8:00:00"
     pbs.tasks_per_node = 4
     pbs.save_output = True
@@ -83,7 +85,8 @@ model.json = "exp_log.json"
 model.to_json(dir + filename + 'exp_input.json')
 
 with open(dir + filename + "PBS" , 'w') as pbsfile :
-    pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD")
+    pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD",
+                     env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
     pbs.time = "8:00:00"
     pbs.tasks_per_node = 4
     pbs.save_output = True
@@ -91,7 +94,8 @@ with open(dir + filename + "PBS" , 'w') as pbsfile :
     total_input.write("qsub " + dir + filename + "PBS" + "\n")
 
 with open(dir + filename + "PBS_exp", 'w') as pbsfile:
-    pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD")
+    pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
+                     env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
     pbs.time = "8:00:00"
     pbs.tasks_per_node = 4
     pbs.save_output = True
@@ -123,7 +127,8 @@ for i in range(3,11):
     model.to_json(dir + filename + str(i) + '/exp_input.json')
 
     with open(dir + filename + str(i) + "/PBS" , 'w') as pbsfile :
-        pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD")
+        pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD",
+                         env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
         pbs.time = "8:00:00"
         pbs.tasks_per_node = 4
         pbs.save_output = True
@@ -131,7 +136,8 @@ for i in range(3,11):
         total_input.write("qsub " + dir + filename + str(i) + "/PBS" + "\n")
 
     with open(dir + filename + str(i) + "/PBS_exp", 'w') as pbsfile:
-        pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD")
+        pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
+                         env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
         pbs.time = "8:00:00"
         pbs.tasks_per_node = 4
         pbs.save_output = True
@@ -163,7 +169,8 @@ for i in range(3,11):
     model.to_json(dir + filename + str(i) + '/exp_input.json')
 
     with open(dir + filename + str(i) + "/PBS", 'w') as pbsfile:
-        pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD")
+        pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD",
+                         env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
         pbs.time = "8:00:00"
         pbs.tasks_per_node = 4
         pbs.save_output = True
@@ -171,7 +178,8 @@ for i in range(3,11):
         total_input.write("qsub " + dir + filename + str(i) + "/PBS" + "\n")
 
     with open(dir + filename + str(i) + "/PBS_exp", 'w') as pbsfile:
-        pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD")
+        pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
+                         env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
         pbs.time = "8:00:00"
         pbs.tasks_per_node = 4
         pbs.save_output = True
@@ -215,7 +223,8 @@ model.json = "exp_log.json"
 model.to_json(dir + filename + 'exp_input.json')
 
 with open(dir + filename + "PBS" , 'w') as pbsfile :
-    pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD")
+    pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD",
+                     env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
     pbs.time = "8:00:00"
     pbs.tasks_per_node = 4
     pbs.save_output = True
@@ -223,7 +232,8 @@ with open(dir + filename + "PBS" , 'w') as pbsfile :
     total_input.write("qsub " + dir + filename + "PBS" + "\n")
 
 with open(dir + filename + "PBS_exp", 'w') as pbsfile:
-    pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD")
+    pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
+                     env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
     pbs.time = "8:00:00"
     pbs.tasks_per_node = 4
     pbs.save_output = True
@@ -251,7 +261,8 @@ model.json = "exp_log.json"
 model.to_json(dir + filename + 'exp_input.json')
 
 with open(dir + filename + "PBS" , 'w') as pbsfile :
-    pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD")
+    pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD",
+                     env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
     pbs.time = "8:00:00"
     pbs.tasks_per_node = 4
     pbs.save_output = True
@@ -259,7 +270,8 @@ with open(dir + filename + "PBS" , 'w') as pbsfile :
     total_input.write("qsub " + dir + filename + "PBS" + "\n")
 
 with open(dir + filename + "PBS_exp", 'w') as pbsfile:
-    pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD")
+    pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
+                     env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
     pbs.time = "8:00:00"
     pbs.tasks_per_node = 4
     pbs.save_output = True
@@ -291,7 +303,8 @@ for i in range(3,11):
     model.to_json(dir + filename + str(i) + '/exp_input.json')
 
     with open(dir + filename + str(i) + "/PBS" , 'w') as pbsfile :
-        pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD")
+        pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD",
+                         env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
         pbs.time = "8:00:00"
         pbs.tasks_per_node = 4
         pbs.save_output = True
@@ -299,7 +312,8 @@ for i in range(3,11):
         total_input.write("qsub " + dir + filename + str(i) + "/PBS" + "\n")
 
     with open(dir + filename + str(i) + "/PBS_exp", 'w') as pbsfile:
-        pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD")
+        pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
+                         env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
         pbs.time = "8:00:00"
         pbs.tasks_per_node = 4
         pbs.save_output = True
@@ -331,7 +345,8 @@ for i in range(3,11):
     model.to_json(dir + filename + str(i) + '/exp_input.json')
 
     with open(dir + filename + str(i) + "/PBS", 'w') as pbsfile:
-        pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD")
+        pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD",
+                         env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
         pbs.time = "8:00:00"
         pbs.tasks_per_node = 4
         pbs.save_output = True
@@ -339,7 +354,8 @@ for i in range(3,11):
         total_input.write("qsub " + dir + filename + str(i) + "/PBS" + "\n")
 
     with open(dir + filename + str(i) + "/PBS_exp", 'w') as pbsfile:
-        pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD")
+        pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
+                         env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
         pbs.time = "8:00:00"
         pbs.tasks_per_node = 4
         pbs.save_output = True
@@ -389,7 +405,8 @@ model.json = "exp_log.json"
 model.to_json(dir + filename + 'exp_input.json')
 
 with open(dir + filename + "PBS" , 'w') as pbsfile :
-    pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD")
+    pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD",
+                     env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
     pbs.time = "8:00:00"
     pbs.tasks_per_node = 4
     pbs.save_output = True
@@ -397,7 +414,8 @@ with open(dir + filename + "PBS" , 'w') as pbsfile :
     total_input.write("qsub " + dir + filename + "PBS" + "\n")
 
 with open(dir + filename + "PBS_exp", 'w') as pbsfile:
-    pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD")
+    pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
+                     env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
     pbs.time = "8:00:00"
     pbs.tasks_per_node = 4
     pbs.save_output = True
@@ -425,7 +443,8 @@ model.json = "exp_log.json"
 model.to_json(dir + filename + 'exp_input.json')
 
 with open(dir + filename + "PBS" , 'w') as pbsfile :
-    pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD")
+    pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD",
+                     env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
     pbs.time = "8:00:00"
     pbs.tasks_per_node = 4
     pbs.save_output = True
@@ -433,7 +452,8 @@ with open(dir + filename + "PBS" , 'w') as pbsfile :
     total_input.write("qsub " + dir + filename + "PBS" + "\n")
 
 with open(dir + filename + "PBS_exp", 'w') as pbsfile:
-    pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD")
+    pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
+                     env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
     pbs.time = "8:00:00"
     pbs.tasks_per_node = 4
     pbs.save_output = True
@@ -465,7 +485,8 @@ for i in range(3,11):
     model.to_json(dir + filename + str(i) + '/exp_input.json')
 
     with open(dir + filename + str(i) + "/PBS" , 'w') as pbsfile :
-        pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD")
+        pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD",
+                         env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
         pbs.time = "8:00:00"
         pbs.tasks_per_node = 4
         pbs.save_output = True
@@ -473,7 +494,8 @@ for i in range(3,11):
         total_input.write("qsub " + dir + filename + str(i) + "/PBS" + "\n")
 
     with open(dir + filename + str(i) + "/PBS_exp", 'w') as pbsfile:
-        pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD")
+        pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
+                         env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
         pbs.time = "8:00:00"
         pbs.tasks_per_node = 4
         pbs.save_output = True
@@ -505,7 +527,8 @@ for i in range(3,11):
     model.to_json(dir + filename + str(i) + '/exp_input.json')
 
     with open(dir + filename + str(i) + "/PBS", 'w') as pbsfile:
-        pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD")
+        pbs = jobsys.pbs("quartz.exe", "input.json", "wenchang", "SMD",
+                         env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
         pbs.time = "8:00:00"
         pbs.tasks_per_node = 4
         pbs.save_output = True
@@ -513,7 +536,8 @@ for i in range(3,11):
         total_input.write("qsub " + dir + filename + str(i) + "/PBS" + "\n")
 
     with open(dir + filename + str(i) + "/PBS_exp", 'w') as pbsfile:
-        pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD")
+        pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
+                         env="alias quartz.exe=\"/public/home/ugrs1_LJ/Walter/Quartz/build/bin/quartz.exe\"")
         pbs.time = "8:00:00"
         pbs.tasks_per_node = 4
         pbs.save_output = True
