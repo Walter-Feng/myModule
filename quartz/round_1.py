@@ -15,6 +15,7 @@ generic_printer = {
 }
 
 total_input = open("autoscript.sh", "w")
+cwd = os.getcwd()
 
 ## Model 1 - cubic decay ##
 if not os.path.exists('cubic_decay'):
@@ -53,7 +54,7 @@ with open(dir + filename + "PBS" , 'w') as pbsfile :
     pbs.tasks_per_node = 4
     pbs.save_output = True
     pbsfile.write(pbs.to_string())
-    total_input.write("qsub " + dir + filename + "PBS" + "\n")
+    total_input.write("cd " + cwd + '/' + dir + filename + " && " + "qsub " + "PBS" + "\n")
 
 with open(dir + filename + "PBS_exp", 'w') as pbsfile:
     pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
@@ -62,7 +63,7 @@ with open(dir + filename + "PBS_exp", 'w') as pbsfile:
     pbs.tasks_per_node = 4
     pbs.save_output = True
     pbsfile.write(pbs.to_string())
-    total_input.write("qsub " + dir + filename + "PBS_exp" + "\n")
+    total_input.write("cd " + cwd + '/' + dir + filename + " && " + "qsub " + "PBS_exp" + "\n")
 
 
 ##### establish cwa ####
@@ -91,7 +92,7 @@ with open(dir + filename + "PBS" , 'w') as pbsfile :
     pbs.tasks_per_node = 4
     pbs.save_output = True
     pbsfile.write(pbs.to_string())
-    total_input.write("qsub " + dir + filename + "PBS" + "\n")
+    total_input.write("cd " + cwd + '/' + dir + filename + " && " + "qsub " + "PBS" + "\n")
 
 with open(dir + filename + "PBS_exp", 'w') as pbsfile:
     pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
@@ -100,7 +101,7 @@ with open(dir + filename + "PBS_exp", 'w') as pbsfile:
     pbs.tasks_per_node = 4
     pbs.save_output = True
     pbsfile.write(pbs.to_string())
-    total_input.write("qsub " + dir + filename + "PBS_exp" + "\n")
+    total_input.write("cd " + cwd + '/' + dir + filename + " && " + "qsub " + "PBS_exp" + "\n")
 
 ##### establish cwa_smd ####
 filename = "cwa_smd/"
@@ -133,7 +134,7 @@ for i in range(3,11):
         pbs.tasks_per_node = 4
         pbs.save_output = True
         pbsfile.write(pbs.to_string())
-        total_input.write("qsub " + dir + filename + str(i) + "/PBS" + "\n")
+        total_input.write("cd " + cwd + '/' + dir + filename + str(i) + " && " + "qsub " + "PBS" + "\n")
 
     with open(dir + filename + str(i) + "/PBS_exp", 'w') as pbsfile:
         pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
@@ -142,7 +143,7 @@ for i in range(3,11):
         pbs.tasks_per_node = 4
         pbs.save_output = True
         pbsfile.write(pbs.to_string())
-        total_input.write("qsub " + dir + filename + str(i) + "/PBS_exp" + "\n")
+        total_input.write("cd " + cwd + '/' + dir + filename + str(i) + " && " + "qsub " + "PBS_exp" + "\n")
 ##### establish dvr_smd ####
 filename = "dvr_smd/"
 if not os.path.exists(dir + filename):
@@ -175,7 +176,7 @@ for i in range(3,11):
         pbs.tasks_per_node = 4
         pbs.save_output = True
         pbsfile.write(pbs.to_string())
-        total_input.write("qsub " + dir + filename + str(i) + "/PBS" + "\n")
+        total_input.write("cd " + cwd + '/' + dir + filename + str(i) + " && " + "qsub " + "PBS" + "\n")
 
     with open(dir + filename + str(i) + "/PBS_exp", 'w') as pbsfile:
         pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
@@ -184,7 +185,7 @@ for i in range(3,11):
         pbs.tasks_per_node = 4
         pbs.save_output = True
         pbsfile.write(pbs.to_string())
-        total_input.write("qsub " + dir + filename + str(i) + "/PBS_exp" + "\n")
+        total_input.write("cd " + cwd + '/' + dir + filename + str(i) + " && " + "qsub " + "PBS_exp" + "\n")
 
 
 
@@ -229,7 +230,7 @@ with open(dir + filename + "PBS" , 'w') as pbsfile :
     pbs.tasks_per_node = 4
     pbs.save_output = True
     pbsfile.write(pbs.to_string())
-    total_input.write("qsub " + dir + filename + "PBS" + "\n")
+    total_input.write("cd " + cwd + '/' + dir + filename + " && " + "qsub " + "PBS" + "\n")
 
 with open(dir + filename + "PBS_exp", 'w') as pbsfile:
     pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
@@ -238,7 +239,7 @@ with open(dir + filename + "PBS_exp", 'w') as pbsfile:
     pbs.tasks_per_node = 4
     pbs.save_output = True
     pbsfile.write(pbs.to_string())
-    total_input.write("qsub " + dir + filename + "PBS_exp" + "\n")
+    total_input.write("cd " + cwd + '/' + dir + filename + " && " + "qsub " + "PBS_exp" + "\n")
 
 
 ##### establish cwa ####
@@ -267,7 +268,7 @@ with open(dir + filename + "PBS" , 'w') as pbsfile :
     pbs.tasks_per_node = 4
     pbs.save_output = True
     pbsfile.write(pbs.to_string())
-    total_input.write("qsub " + dir + filename + "PBS" + "\n")
+    total_input.write("cd " + cwd + '/' + dir + filename + " && " + "qsub " + "PBS" + "\n")
 
 with open(dir + filename + "PBS_exp", 'w') as pbsfile:
     pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
@@ -276,7 +277,7 @@ with open(dir + filename + "PBS_exp", 'w') as pbsfile:
     pbs.tasks_per_node = 4
     pbs.save_output = True
     pbsfile.write(pbs.to_string())
-    total_input.write("qsub " + dir + filename + "PBS_exp" + "\n")
+    total_input.write("cd " + cwd + '/' + dir + filename + " && " + "qsub " + "PBS_exp" + "\n")
 
 ##### establish cwa_smd ####
 filename = "cwa_smd/"
@@ -309,7 +310,7 @@ for i in range(3,11):
         pbs.tasks_per_node = 4
         pbs.save_output = True
         pbsfile.write(pbs.to_string())
-        total_input.write("qsub " + dir + filename + str(i) + "/PBS" + "\n")
+        total_input.write("cd " + cwd + '/' + dir + filename + str(i) + " && " + "qsub " + "PBS" + "\n")
 
     with open(dir + filename + str(i) + "/PBS_exp", 'w') as pbsfile:
         pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
@@ -318,7 +319,7 @@ for i in range(3,11):
         pbs.tasks_per_node = 4
         pbs.save_output = True
         pbsfile.write(pbs.to_string())
-        total_input.write("qsub " + dir + filename + str(i) + "/PBS_exp" + "\n")
+        total_input.write("cd " + cwd + '/' + dir + filename + str(i) + " && " + "qsub " + "PBS_exp" + "\n")
 ##### establish dvr_smd ####
 filename = "dvr_smd/"
 if not os.path.exists(dir + filename):
@@ -351,7 +352,7 @@ for i in range(3,11):
         pbs.tasks_per_node = 4
         pbs.save_output = True
         pbsfile.write(pbs.to_string())
-        total_input.write("qsub " + dir + filename + str(i) + "/PBS" + "\n")
+        total_input.write("cd " + cwd + '/' + dir + filename + str(i) + " && " + "qsub " + "PBS" + "\n")
 
     with open(dir + filename + str(i) + "/PBS_exp", 'w') as pbsfile:
         pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
@@ -360,7 +361,7 @@ for i in range(3,11):
         pbs.tasks_per_node = 4
         pbs.save_output = True
         pbsfile.write(pbs.to_string())
-        total_input.write("qsub " + dir + filename + str(i) + "/PBS_exp" + "\n")
+        total_input.write("cd " + cwd + '/' + dir + filename + str(i) + " && " + "qsub " + "PBS_exp" + "\n")
 
 
 
@@ -411,7 +412,7 @@ with open(dir + filename + "PBS" , 'w') as pbsfile :
     pbs.tasks_per_node = 4
     pbs.save_output = True
     pbsfile.write(pbs.to_string())
-    total_input.write("qsub " + dir + filename + "PBS" + "\n")
+    total_input.write("cd " + cwd + '/' + dir + filename + " && " + "qsub " + "PBS" + "\n")
 
 with open(dir + filename + "PBS_exp", 'w') as pbsfile:
     pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
@@ -420,7 +421,7 @@ with open(dir + filename + "PBS_exp", 'w') as pbsfile:
     pbs.tasks_per_node = 4
     pbs.save_output = True
     pbsfile.write(pbs.to_string())
-    total_input.write("qsub " + dir + filename + "PBS_exp" + "\n")
+    total_input.write("cd " + cwd + '/' + dir + filename + " && " + "qsub " + "PBS_exp" + "\n")
 
 
 ##### establish cwa ####
@@ -449,7 +450,7 @@ with open(dir + filename + "PBS" , 'w') as pbsfile :
     pbs.tasks_per_node = 4
     pbs.save_output = True
     pbsfile.write(pbs.to_string())
-    total_input.write("qsub " + dir + filename + "PBS" + "\n")
+    total_input.write("cd " + cwd + '/' + dir + filename + " && " + "qsub " + "PBS" + "\n")
 
 with open(dir + filename + "PBS_exp", 'w') as pbsfile:
     pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
@@ -458,7 +459,7 @@ with open(dir + filename + "PBS_exp", 'w') as pbsfile:
     pbs.tasks_per_node = 4
     pbs.save_output = True
     pbsfile.write(pbs.to_string())
-    total_input.write("qsub " + dir + filename + "PBS_exp" + "\n")
+    total_input.write("cd " + cwd + '/' + dir + filename + " && " + "qsub " + "PBS_exp" + "\n")
 
 ##### establish cwa_smd ####
 filename = "cwa_smd/"
@@ -491,7 +492,7 @@ for i in range(3,11):
         pbs.tasks_per_node = 4
         pbs.save_output = True
         pbsfile.write(pbs.to_string())
-        total_input.write("qsub " + dir + filename + str(i) + "/PBS" + "\n")
+        total_input.write("cd " + cwd + '/' + dir + filename + str(i) + " && " + "qsub " + "PBS" + "\n")
 
     with open(dir + filename + str(i) + "/PBS_exp", 'w') as pbsfile:
         pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
@@ -500,7 +501,7 @@ for i in range(3,11):
         pbs.tasks_per_node = 4
         pbs.save_output = True
         pbsfile.write(pbs.to_string())
-        total_input.write("qsub " + dir + filename + str(i) + "/PBS_exp" + "\n")
+        total_input.write("cd " + cwd + '/' + dir + filename + str(i) + " && " + "qsub " + "PBS_exp" + "\n" )
 ##### establish dvr_smd ####
 filename = "dvr_smd/"
 if not os.path.exists(dir + filename):
@@ -533,7 +534,7 @@ for i in range(3,11):
         pbs.tasks_per_node = 4
         pbs.save_output = True
         pbsfile.write(pbs.to_string())
-        total_input.write("qsub " + dir + filename + str(i) + "/PBS" + "\n")
+        total_input.write("cd " + cwd + '/' + dir + filename + str(i) + " && " + "qsub " + "PBS" + "\n")
 
     with open(dir + filename + str(i) + "/PBS_exp", 'w') as pbsfile:
         pbs = jobsys.pbs("quartz.exe", "exp_input.json", "wenchang", "SMD",
@@ -542,6 +543,6 @@ for i in range(3,11):
         pbs.tasks_per_node = 4
         pbs.save_output = True
         pbsfile.write(pbs.to_string())
-        total_input.write("qsub " + dir + filename + str(i) + "/PBS_exp" + "\n")
+        total_input.write("cd " + cwd + '/' + dir + filename + str(i) + " && " + "qsub " + "PBS_exp" + "\n")
 
 total_input.close()
