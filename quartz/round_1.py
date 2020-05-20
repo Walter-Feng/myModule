@@ -295,6 +295,7 @@ for i in range(3,11):
 
     model.grade = i
     model.json = "log.json"
+    model.printer = generic_printer
 
     model.to_json(dir + filename + str(i) + '/input.json')
 
@@ -477,6 +478,7 @@ for i in range(3,11):
 
     model.grade = i
     model.json = "log.json"
+    model.printer = generic_printer
 
     model.to_json(dir + filename + str(i) + '/input.json')
 

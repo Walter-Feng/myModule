@@ -1,26 +1,26 @@
 import json
 
 model = {
-    "harmonic": {
+    "harmonic": {"polynomial" : {
         "exponents": [[2]],
         "coefs": [0.5]
-    },
-    "cubic_decay": {
+    }},
+    "cubic_decay": {"polynomial" : {
       "exponents": [[2],[3]],
       "coefs": [0.5, 1.0/6.0]
-    },
-    "anharmonic": {
+    }},
+    "anharmonic": {"polynomial" : {
         "exponents": [[2],[3],[4]],
         "coefs": [1,-0.1,0.1]
-    },
-    "quartic": {
+    }},
+    "quartic": {"polynomial" : {
         "exponents": [[4]],
         "coefs": [0.25]
-    },
-    "double_well": {
+    }},
+    "double_well": { "polynomial" : {
         "exponents": [[2],[4]],
         "coefs":[-0.0003, 0.000024]
-    }
+    }}
 }
 
 def initial(covariance, mean, coef, phase_factor = None) :
@@ -53,6 +53,9 @@ class quartz(object):
             "print_level": 2
         }
         self.grade = 2
+        self.scaling = [1.0]
+        self.tol = 1
+        self.gradient_tol = 0.1
         self.print_json = False
         self.json = "log.json"
 
@@ -68,6 +71,9 @@ class quartz(object):
                 "steps": self.steps,
                 "dt": self.dt,
                 "grade": self.grade,
+                "scaling": self.scaling,
+                "tol": self.tol,
+                "gradient_tol" : self.gradient_tol,
                 "printer": self.printer,
                 "json": self.json
             }
@@ -81,6 +87,10 @@ class quartz(object):
                 "range": self.ranges,
                 "steps": self.steps,
                 "dt": self.dt,
+                "grade": self.grade,
+                "scaling": self.scaling,
+                "tol": self.tol,
+                "gradient_tol": self.gradient_tol,
                 "printer": self.printer,
             }
 
