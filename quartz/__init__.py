@@ -56,6 +56,7 @@ class quartz(object):
         self.scaling = [1.0]
         self.tol = 1
         self.gradient_tol = 0.1
+        self.max_iter = 100
         self.print_json = False
         self.json = "log.json"
 
@@ -74,6 +75,7 @@ class quartz(object):
                 "scaling": self.scaling,
                 "tol": self.tol,
                 "gradient_tol" : self.gradient_tol,
+                "max_iter" : self.max_iter,
                 "printer": self.printer,
                 "json": self.json
             }
@@ -91,6 +93,7 @@ class quartz(object):
                 "scaling": self.scaling,
                 "tol": self.tol,
                 "gradient_tol": self.gradient_tol,
+                "max_iter": self.max_iter,
                 "printer": self.printer,
             }
 

@@ -32,10 +32,11 @@ template_model.method = 'cwa_smd_opt'
 template_model.grid = [50,50]
 template_model.ranges = [[-10,10],[-10,10]]
 template_model.dt = 10.0
-template_model.steps = 10000
+template_model.steps = 1000
 template_model.scaling = [4.0, 4.0]
 template_model.tol = 0.001
 template_model.gradient_tol = 0.0001
+template_model.max_iter = 10000
 template_model.printer = generic_printer
 
 
