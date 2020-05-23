@@ -2,6 +2,7 @@ import quartz
 import jobsys
 import math
 import os
+import copy
 
 expectation_printer = {
     "type": "expectation",
@@ -20,8 +21,6 @@ cwd = os.getcwd()
 
 
 ## Model 3 - double_well ##
-if not os.path.exists('double_well'):
-    os.makedirs('double_well')
 
 template_model = quartz.quartz()
 
@@ -50,7 +49,7 @@ if not os.path.exists(dir + filename):
     os.makedirs(dir + filename)
 for i in range(3,11):
 
-    model = template_model
+    model = copy.deepcopy(template_model)
     if not os.path.exists(dir + filename + str(i)):
         os.makedirs(dir + filename + str(i))
 
@@ -90,7 +89,7 @@ if not os.path.exists(dir + filename):
     os.makedirs(dir + filename)
 for i in range(6):
 
-    model = template_model
+    model = copy.deepcopy(template_model)
     if not os.path.exists(dir + filename + str(i)):
         os.makedirs(dir + filename + str(i))
 
@@ -130,7 +129,7 @@ if not os.path.exists(dir + filename):
     os.makedirs(dir + filename)
 for i in range(6):
 
-    model = template_model
+    model = copy.deepcopy(template_model)
     if not os.path.exists(dir + filename + str(i)):
         os.makedirs(dir + filename + str(i))
 
@@ -170,7 +169,7 @@ if not os.path.exists(dir + filename):
     os.makedirs(dir + filename)
 for i in range(2, 9):
 
-    model = template_model
+    model = copy.deepcopy(template_model)
     if not os.path.exists(dir + filename + str(i)):
         os.makedirs(dir + filename + str(i))
 
