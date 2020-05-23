@@ -2,6 +2,7 @@ import quartz
 import jobsys
 import math
 import os
+import copy
 
 expectation_printer = {
     "type": "expectation",
@@ -50,7 +51,7 @@ if not os.path.exists(dir + filename):
     os.makedirs(dir + filename)
 for i in range(3,11):
 
-    model = template_model
+    model = copy.deepcopy(template_model)
     if not os.path.exists(dir + filename + str(i)):
         os.makedirs(dir + filename + str(i))
 
@@ -90,7 +91,7 @@ if not os.path.exists(dir + filename):
     os.makedirs(dir + filename)
 for i in range(2, 9):
 
-    model = template_model
+    model = copy.deepcopy(template_model)
     if not os.path.exists(dir + filename + str(i)):
         os.makedirs(dir + filename + str(i))
 
