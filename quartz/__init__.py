@@ -1,4 +1,6 @@
 import json
+import numpy as np
+import re
 
 model = {
     "harmonic": {"polynomial" : {
@@ -101,4 +103,39 @@ class quartz(object):
         with open(filename, 'w') as fp:
             json.dump(self.to_map(), fp)
 
+
+class QuartzResult(object):
+    def __init__(self, steps, timeline, data, labels, is_normal=False, time=-1):
+        self.steps = [steps[0], steps[-1]]
+        self.timeline = timeline
+        self.data = data
+        self.labels = labels
+        self.is_normal = is_normal
+        self.time = time
+
+
+def parse_generic_quartz_result(result_str):
+
+    data_block_match = re.compile(r"=+\n(?P<data>[\s\.\d\-]+)=+\n", re.MULTILINE)
+    data_block = data_block_match.search(result_str).groupdict()['data']
+
+    label_match = re.compile(r"\|[ ]*(?P<label>[a-zA-z]+)[ ]*")
+    labels = [i.groupdict()['label'] for i in label_match.finditer(result_str)]
+    del labels[0]
+    del labels[0]
+
+    data_block_lines = data_block.split("\n")
+    data_block_lines.remove("")
+
+    all_data = np.array(list(map(lambda x: list(map(float, x)), [i.split() for i in data_block_lines]))).transpose()
+
+    steps = all_data[0]
+    timeline = all_data[1]
+    data = all_data[2:]
+
+    time = -1
+    is_normally_terminated = bool(re.search("Quartz terminated normally", result_str))
+    if is_normally_terminated:
+        time = re.search(r"Total time elapsed:[ ]+(?P<time>\S+)[ ]+s", result_str).groupdict()['time']
+    return QuartzResult(steps, timeline, data, labels, is_normal=is_normally_terminated, time=time)
 
