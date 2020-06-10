@@ -56,6 +56,7 @@ class quartz(object):
         }
         self.grade = 2
         self.scaling = [1.0]
+        self.init_step = 0.01
         self.tol = 1
         self.gradient_tol = 0.1
         self.max_iter = 100
@@ -76,11 +77,12 @@ class quartz(object):
                 "dt": self.dt,
                 "grade": self.grade,
                 "scaling": self.scaling,
+                "init_step": self.init_step,
                 "tol": self.tol,
                 "gradient_tol" : self.gradient_tol,
                 "max_iter" : self.max_iter,
-                "printer": self.printer,
                 "optimizer": self.optimizer,
+                "printer": self.printer,
                 "json": self.json
             }
         else:
@@ -95,9 +97,11 @@ class quartz(object):
                 "dt": self.dt,
                 "grade": self.grade,
                 "scaling": self.scaling,
+                "init_step": self.init_step,
                 "tol": self.tol,
                 "gradient_tol": self.gradient_tol,
                 "max_iter": self.max_iter,
+                "optimizer": self.optimizer,
                 "printer": self.printer,
             }
 
