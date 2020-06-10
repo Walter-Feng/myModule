@@ -58,6 +58,7 @@ class quartz(object):
         self.gradient_tol = 0.1
         self.max_iter = 100
         self.print_json = False
+        self.optimizer = "bfgs2"
         self.json = "log.json"
 
     def to_map(self):
@@ -77,6 +78,7 @@ class quartz(object):
                 "gradient_tol" : self.gradient_tol,
                 "max_iter" : self.max_iter,
                 "printer": self.printer,
+                "optimizer": self.optimizer,
                 "json": self.json
             }
         else:
